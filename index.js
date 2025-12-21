@@ -380,9 +380,9 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`Ko-fi webhook server listening on port ${PORT}`);
-  console.log(`Webhook endpoint: http://localhost:${PORT}/webhook/kofi`);
+  console.log(`Webhook endpoint: http://0.0.0.0:${PORT}/webhook/kofi`);
   console.log('Verifying IDs...');
   await verifyIds();
 });
