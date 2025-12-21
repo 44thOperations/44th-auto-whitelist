@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 
 const BASE_URL = process.env.BASE_URL || 'http://85.239.155.13:10222/api';
 const API_KEY = process.env.API_KEY || 'gPh7mLluNE0yzIK7ZxSMlIzurKQyefM0O1dtZt5PfP8oW8zfyTD2rtXDd6pwZWfqdxVwilessHsJqSzZQlyxupcTDtnKFrM8ai4g7s9O6bO6c9Ug8eL4qodh6aeyC3vj';
@@ -380,9 +380,22 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+if (isNaN(PORT) || PORT < 1 || PORT > 65535) {
+  console.error(`Invalid PORT: ${process.env.PORT}. Using default port 3000.`);
+  process.exit(1);
+}
+
 app.listen(PORT, '0.0.0.0', async () => {
   console.log(`Ko-fi webhook server listening on port ${PORT}`);
   console.log(`Webhook endpoint: http://0.0.0.0:${PORT}/webhook/kofi`);
   console.log('Verifying IDs...');
   await verifyIds();
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Please stop the other process or use a different port.`);
+    console.error(`To find the process: lsof -i :${PORT} or netstat -tulpn | grep ${PORT}`);
+  } else {
+    console.error('Server error:', err);
+  }
+  process.exit(1);
 });
