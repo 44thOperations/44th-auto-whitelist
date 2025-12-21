@@ -7,7 +7,7 @@ const PORT = parseInt(process.env.PORT || '3000', 10);
 
 const BASE_URL = process.env.BASE_URL || 'http://85.239.155.13:10222/api';
 const API_KEY = process.env.API_KEY || 'gPh7mLluNE0yzIK7ZxSMlIzurKQyefM0O1dtZt5PfP8oW8zfyTD2rtXDd6pwZWfqdxVwilessHsJqSzZQlyxupcTDtnKFrM8ai4g7s9O6bO6c9Ug8eL4qodh6aeyC3vj';
-const KOFI_VERIFICATION_TOKEN = 'e1dd4c87-7920-493c-9e60';
+const KOFI_VERIFICATION_TOKEN = 'e1dd4c87-7920-493c-9e60-e3eb419e98e1';
 const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1452369510551261224/JfyS4MhPy-P_DxgtPc6ZGeP7wGhkJ_sic0LjpVmG_atCyggpUgkmiwB6XP6HVm9zj8bd';
 
 const DONATOR_GROUP_ID = '659efa9f9611b021c3ae066f';
