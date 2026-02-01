@@ -20,7 +20,7 @@ async function verifyIds() {
   try {
     const listsUrl = `${BASE_URL}/lists/read/getAll?apiKey=${encodeURIComponent(API_KEY)}`;
     const listsResponse = await fetch(listsUrl);
-    
+
     if (listsResponse.ok) {
       const listsData = await listsResponse.json();
       console.log('Available Lists:');
@@ -28,7 +28,7 @@ async function verifyIds() {
         listsData.forEach(list => {
           console.log(`  - ${list.title} (ID: ${list._id})`);
         });
-        
+
         const listExists = listsData.some(list => list._id === DONATOR_LIST_ID);
         if (!listExists) {
           console.warn(`WARNING: List ID ${DONATOR_LIST_ID} not found in available lists!`);
@@ -41,10 +41,10 @@ async function verifyIds() {
     } else {
       console.warn('Could not fetch lists:', listsResponse.status);
     }
-    
+
     const clansUrl = `${BASE_URL}/whitelist/read/getAllClans?apiKey=${encodeURIComponent(API_KEY)}`;
     const clansResponse = await fetch(clansUrl);
-    
+
     if (clansResponse.ok) {
       const clansData = await clansResponse.json();
       console.log('Available Clans/Groups:');
@@ -52,7 +52,7 @@ async function verifyIds() {
         clansData.forEach(clan => {
           console.log(`  - ${clan.full_name || clan.tag || 'Unknown'} (ID: ${clan._id})`);
         });
-        
+
         const clanExists = clansData.some(clan => clan._id === DONATOR_GROUP_ID);
         if (!clanExists) {
           console.warn(`WARNING: Group ID ${DONATOR_GROUP_ID} not found in available clans!`);
@@ -70,7 +70,7 @@ async function verifyIds() {
     } else {
       console.warn('Could not fetch clans:', clansResponse.status);
     }
-    
+
     console.log('');
   } catch (error) {
     console.warn('Could not verify IDs:', error.message);
@@ -82,78 +82,78 @@ app.use(bodyParser.json());
 
 function extractSteamID64(message) {
   if (!message) return null;
-  
+
   const steamIdRegex = /\b\d{17}\b/g;
   const matches = message.match(steamIdRegex);
-  
+
   if (matches && matches.length > 0) {
     return matches[0];
   }
-  
+
   return null;
 }
 
 function calculateDurationHours(amount, currency) {
   let amountGBP = parseFloat(amount);
-  
-  if (amountGBP >= 44.00) {
+
+  if (amountGBP >= 35.00) {
     return 999999;
-  } else if (amountGBP >= 35.00) {
+  } else if (amountGBP >= 28.00) {
     return 6575; // ~9 months
-  } else if (amountGBP >= 25.00) {
+  } else if (amountGBP >= 20.00) {
     return 2190; // ~3 months
-  } else if (amountGBP >= 10.00) {
+  } else if (amountGBP >= 8.00) {
     return 730; // ~1 month
   }
-  
+
   return 0;
 }
 
 function getTagName(amount) {
   const amountGBP = parseFloat(amount);
-  
-  if (amountGBP >= 44.00) {
+
+  if (amountGBP >= 35.00) {
     return '@ULTIMATE Anglian Donator';
-  } else if (amountGBP >= 35.00) {
+  } else if (amountGBP >= 28.00) {
     return '@Royal Anglian Lifetime Donor';
-  } else if (amountGBP >= 25.00) {
+  } else if (amountGBP >= 20.00) {
     return '@Royal Anglian Sponsor';
-  } else if (amountGBP >= 10.00) {
+  } else if (amountGBP >= 8.00) {
     return '@Squaddie Donator';
   }
-  
+
   return null;
 }
 
 function getTierDescription(amount) {
   const amountGBP = parseFloat(amount);
-  
-  if (amountGBP >= 44.00) {
+
+  if (amountGBP >= 35.00) {
     return 'Permanent queue jump whitelisting to our Official Servers. Never wait in a Squad queue again. Also receive the @ULTIMATE Anglian Donator holographic discord tag.';
-  } else if (amountGBP >= 35.00) {
+  } else if (amountGBP >= 28.00) {
     return 'Temporary queue jump whitelisting to our Official Squad Servers for 9 months. Receive the @Royal Anglian Lifetime Donor tag.';
-  } else if (amountGBP >= 25.00) {
+  } else if (amountGBP >= 20.00) {
     return 'Temporary queue jump whitelisting to our Official Squad Servers for 3 months. Receive the @Royal Anglian Sponsor tag.';
-  } else if (amountGBP >= 10.00) {
+  } else if (amountGBP >= 8.00) {
     return 'Temporary queue jump whitelisting to our Official Squad Servers for 1 month. Receive the @Squaddie Donator tag.';
   }
-  
+
   return null;
 }
 
 async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescription) {
   try {
     const amountGBP = parseFloat(kofiData.amount);
-    const isPermanent = amountGBP >= 44.00;
-    const duration = isPermanent ? 'Permanent' : 
-                     amountGBP >= 35.00 ? '9 months' :
-                     amountGBP >= 25.00 ? '3 months' : '1 month';
+    const isPermanent = amountGBP >= 35.00;
+    const duration = isPermanent ? 'Permanent' :
+      amountGBP >= 28.00 ? '9 months' :
+        amountGBP >= 20.00 ? '3 months' : '1 month';
 
     const embed = {
       title: 'New Ko-fi Donation',
-      color: amountGBP >= 44.00 ? 0xFFD700 : 
-             amountGBP >= 35.00 ? 0x9B59B6 :
-             amountGBP >= 25.00 ? 0x3498DB : 0x2ECC71,
+      color: amountGBP >= 35.00 ? 0xFFD700 :
+        amountGBP >= 28.00 ? 0x9B59B6 :
+          amountGBP >= 20.00 ? 0x3498DB : 0x2ECC71,
       fields: [
         {
           name: 'Donator',
@@ -187,11 +187,11 @@ async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescrip
         }
       ],
       footer: {
-        text: 'Sale prices valid until January 2nd, 2026'
+        text: 'Flash Sunday Sale - 20% OFF'
       },
       timestamp: new Date().toISOString()
     };
-    
+
     if (kofiData.message && kofiData.message.trim()) {
       embed.fields.push({
         name: 'Message',
@@ -199,11 +199,11 @@ async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescrip
         inline: false
       });
     }
-    
+
     const payload = {
       embeds: [embed]
     };
-    
+
     const response = await fetch(DISCORD_WEBHOOK_URL, {
       method: 'POST',
       headers: {
@@ -211,7 +211,7 @@ async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescrip
       },
       body: JSON.stringify(payload)
     });
-    
+
     if (!response.ok) {
       console.error('Failed to send Discord notification:', response.status, await response.text());
     } else {
@@ -227,9 +227,9 @@ async function addPlayerToWhitelist(steamId64, discordUsername, username, durati
     if (!DONATOR_AVAILABLE_GROUP_ID) {
       throw new Error('Available group ID not found. Make sure the server has verified IDs on startup.');
     }
-    
+
     const url = `${BASE_URL}/whitelist/write/addPlayer?apiKey=${encodeURIComponent(API_KEY)}`;
-    
+
     const payload = {
       apiKey: API_KEY,
       discordUsername: discordUsername || '',
@@ -240,12 +240,12 @@ async function addPlayerToWhitelist(steamId64, discordUsername, username, durati
       durationHours: durationHours.toString(),
       sel_list_id: DONATOR_LIST_ID
     };
-    
+
     console.log('Adding player to whitelist:', {
       ...payload,
       apiKey: '[REDACTED]'
     });
-    
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -253,16 +253,16 @@ async function addPlayerToWhitelist(steamId64, discordUsername, username, durati
       },
       body: JSON.stringify(payload)
     });
-    
+
     console.log(`API Response Status: ${response.status} ${response.statusText}`);
-    
+
     const responseText = await response.text();
     console.log('API Response Raw:', responseText);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${responseText}`);
     }
-    
+
     let data;
     try {
       data = JSON.parse(responseText);
@@ -272,7 +272,7 @@ async function addPlayerToWhitelist(steamId64, discordUsername, username, durati
       console.log('Response was:', responseText);
       throw new Error(`API returned non-JSON response: ${responseText}`);
     }
-    
+
     if (data.status === 'inserted_new_player' || data.status === 'inserted' || data.status === 'success' || data.inserted === true) {
       console.log('Successfully added player to whitelist!');
       if (data.player) {
@@ -282,16 +282,16 @@ async function addPlayerToWhitelist(steamId64, discordUsername, username, durati
       }
       return data;
     }
-    
+
     if (data.status === 'not_inserted' || data.reason) {
       const errorMsg = `FAILED TO INSERT PLAYER: ${data.reason || 'Unknown reason'}`;
       console.error(errorMsg);
       throw new Error(errorMsg);
     }
-    
+
     console.warn('Unknown API response format:', JSON.stringify(data));
     return data;
-    
+
   } catch (error) {
     console.error('Error adding player to whitelist:', error.message);
     throw error;
@@ -301,19 +301,19 @@ async function addPlayerToWhitelist(steamId64, discordUsername, username, durati
 app.post('/webhook/kofi', async (req, res) => {
   try {
     const dataString = req.body.data;
-    
+
     if (!dataString) {
       console.error('No data field in webhook request');
       return res.status(400).send('Missing data field');
     }
-    
+
     const kofiData = JSON.parse(dataString);
-    
+
     if (kofiData.verification_token !== KOFI_VERIFICATION_TOKEN) {
       console.error('Invalid verification token');
       return res.status(401).send('Unauthorized');
     }
-    
+
     console.log('Received Ko-fi webhook:', {
       type: kofiData.type,
       amount: kofiData.amount,
@@ -321,52 +321,52 @@ app.post('/webhook/kofi', async (req, res) => {
       from_name: kofiData.from_name,
       message_id: kofiData.message_id
     });
-    
+
     if (kofiData.type !== 'Donation') {
       console.log(`Skipping webhook type: ${kofiData.type}`);
       return res.status(200).send('OK - Not a donation');
     }
-    
+
     if (kofiData.is_public === false) {
       console.log('Donation is private');
     }
-    
+
     const steamId64 = extractSteamID64(kofiData.message);
-    
+
     if (!steamId64) {
       console.error('No SteamID64 found in message:', kofiData.message);
       return res.status(400).send('SteamID64 not found in message');
     }
-    
+
     console.log(`Extracted SteamID64: ${steamId64}`);
-    
+
     const durationHours = calculateDurationHours(kofiData.amount, kofiData.currency);
-    
+
     if (durationHours === 0) {
       console.error(`Amount ${kofiData.amount} ${kofiData.currency} is below minimum threshold`);
       return res.status(400).send('Donation amount below minimum threshold');
     }
-    
+
     const tagName = getTagName(kofiData.amount);
     const tierDescription = getTierDescription(kofiData.amount);
     console.log(`Donation amount: ${kofiData.amount} ${kofiData.currency}, Duration: ${durationHours} hours, Tag: ${tagName}`);
-    
+
     const username = kofiData.from_name || 'Donator';
     const discordUsername = kofiData.discord_username || '';
-    
+
     await addPlayerToWhitelist(
       steamId64,
       discordUsername,
       username,
       durationHours
     );
-    
+
     console.log(`Successfully whitelisted ${username} (SteamID64: ${steamId64}) for ${durationHours} hours`);
-    
+
     await sendDiscordNotification(kofiData, steamId64, tagName, tierDescription);
-    
+
     res.status(200).send('OK');
-    
+
   } catch (error) {
     console.error('ERROR PROCESSING WEBHOOK:');
     console.error('Error message:', error.message);
