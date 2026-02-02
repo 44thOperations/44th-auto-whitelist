@@ -96,13 +96,13 @@ function extractSteamID64(message) {
 function calculateDurationHours(amount, currency) {
   let amountGBP = parseFloat(amount);
 
-  if (amountGBP >= 35.00) {
+  if (amountGBP >= 44.00) {
     return 999999;
-  } else if (amountGBP >= 28.00) {
+  } else if (amountGBP >= 35.00) {
     return 6575; // ~9 months
-  } else if (amountGBP >= 20.00) {
+  } else if (amountGBP >= 25.00) {
     return 2190; // ~3 months
-  } else if (amountGBP >= 8.00) {
+  } else if (amountGBP >= 10.00) {
     return 730; // ~1 month
   }
 
@@ -112,13 +112,13 @@ function calculateDurationHours(amount, currency) {
 function getTagName(amount) {
   const amountGBP = parseFloat(amount);
 
-  if (amountGBP >= 35.00) {
+  if (amountGBP >= 44.00) {
     return '@ULTIMATE Anglian Donator';
-  } else if (amountGBP >= 28.00) {
+  } else if (amountGBP >= 35.00) {
     return '@Royal Anglian Lifetime Donor';
-  } else if (amountGBP >= 20.00) {
+  } else if (amountGBP >= 25.00) {
     return '@Royal Anglian Sponsor';
-  } else if (amountGBP >= 8.00) {
+  } else if (amountGBP >= 10.00) {
     return '@Squaddie Donator';
   }
 
@@ -128,14 +128,14 @@ function getTagName(amount) {
 function getTierDescription(amount) {
   const amountGBP = parseFloat(amount);
 
-  if (amountGBP >= 35.00) {
-    return 'Permanent queue jump whitelisting to our Official Servers. Never wait in a Squad queue again. Also receive the @ULTIMATE Anglian Donator holographic discord tag.';
-  } else if (amountGBP >= 28.00) {
-    return 'Temporary queue jump whitelisting to our Official Squad Servers for 9 months. Receive the @Royal Anglian Lifetime Donor tag.';
-  } else if (amountGBP >= 20.00) {
-    return 'Temporary queue jump whitelisting to our Official Squad Servers for 3 months. Receive the @Royal Anglian Sponsor tag.';
-  } else if (amountGBP >= 8.00) {
-    return 'Temporary queue jump whitelisting to our Official Squad Servers for 1 month. Receive the @Squaddie Donator tag.';
+  if (amountGBP >= 44.00) {
+    return 'Permanent whitelisting to our Squad Servers.';
+  } else if (amountGBP >= 35.00) {
+    return 'Temporary whitelisting to our Squad Servers, for 9 months.';
+  } else if (amountGBP >= 25.00) {
+    return 'Temporary whitelisting to our Squad Servers, for 3 months.';
+  } else if (amountGBP >= 10.00) {
+    return 'Temporary whitelisting to our Squad Servers, for 1 months.';
   }
 
   return null;
@@ -144,16 +144,16 @@ function getTierDescription(amount) {
 async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescription) {
   try {
     const amountGBP = parseFloat(kofiData.amount);
-    const isPermanent = amountGBP >= 35.00;
+    const isPermanent = amountGBP >= 44.00;
     const duration = isPermanent ? 'Permanent' :
-      amountGBP >= 28.00 ? '9 months' :
-        amountGBP >= 20.00 ? '3 months' : '1 month';
+      amountGBP >= 35.00 ? '9 months' :
+        amountGBP >= 25.00 ? '3 months' : '1 month';
 
     const embed = {
       title: 'New Ko-fi Donation',
-      color: amountGBP >= 35.00 ? 0xFFD700 :
-        amountGBP >= 28.00 ? 0x9B59B6 :
-          amountGBP >= 20.00 ? 0x3498DB : 0x2ECC71,
+      color: amountGBP >= 44.00 ? 0xFFD700 :
+        amountGBP >= 35.00 ? 0x9B59B6 :
+          amountGBP >= 25.00 ? 0x3498DB : 0x2ECC71,
       fields: [
         {
           name: 'Donator',
@@ -187,7 +187,7 @@ async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescrip
         }
       ],
       footer: {
-        text: 'Flash Sunday Sale - 20% OFF'
+        text: '44th auto whitelister'
       },
       timestamp: new Date().toISOString()
     };
