@@ -322,9 +322,9 @@ app.post('/webhook/kofi', async (req, res) => {
       message_id: kofiData.message_id
     });
 
-    if (kofiData.type !== 'Donation') {
+    if (kofiData.type !== 'Donation' && kofiData.type !== 'Subscription') {
       console.log(`Skipping webhook type: ${kofiData.type}`);
-      return res.status(200).send('OK - Not a donation');
+      return res.status(200).send('OK - Unsupported type');
     }
 
     if (kofiData.is_public === false) {
