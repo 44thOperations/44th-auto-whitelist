@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
 
-const BASE_URL = process.env.BASE_URL || 'http://85.239.155.13:10222/api';
+const BASE_URL = process.env.BASE_URL || 'http://85.239.155.190:12002/api';
 const API_KEY = process.env.API_KEY || '5d60rQyW6Wop1dIzYzDzlds6mhMejnt5gvJpP1Wyj3itjXXEngpjMWVL6a8UVpUUJicvEWI2RmDbBdfzstw5z8OAns6xw1EqPbgbFNbZVNGUN90tZRUuNfCAV5Zmuprb';
 const KOFI_VERIFICATION_TOKEN = 'e1dd4c87-7920-493c-9e60-e3eb419e98e1';
 const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1452369510551261224/JfyS4MhPy-P_DxgtPc6ZGeP7wGhkJ_sic0LjpVmG_atCyggpUgkmiwB6XP6HVm9zj8bd';
