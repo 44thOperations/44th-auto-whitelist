@@ -96,8 +96,10 @@ function extractSteamID64(message) {
 function calculateDurationHours(amount, currency) {
   let amountGBP = parseFloat(amount);
 
-  if (amountGBP >= 44.00) {
+  if (amountGBP >= 79.00) {
     return 999999;
+  } else if (amountGBP >= 44.00) {
+    return 8760; // ~12 months
   } else if (amountGBP >= 35.00) {
     return 6575; // ~9 months
   } else if (amountGBP >= 25.00) {
@@ -128,8 +130,10 @@ function getTagName(amount) {
 function getTierDescription(amount) {
   const amountGBP = parseFloat(amount);
 
-  if (amountGBP >= 44.00) {
+  if (amountGBP >= 79.00) {
     return '🔥Permanent queue jump whitelisting 🔥 to our Official Servers.\n𝐍𝐞𝐯𝐞𝐫 𝐰𝐚𝐢𝐭 𝐢𝐧 𝐚 𝐒𝐪𝐮𝐚𝐝 𝐪𝐮𝐞𝐮𝐞 𝐚𝐠𝐚𝐢𝐧.\nAlso receive the @ULTIMATE Anglian Donator holographic discord tag.';
+  } else if (amountGBP >= 44.00) {
+    return 'Temporary queue jump whitelisting to our Official Squad Servers for 12 months. Also receive the @ULTIMATE Anglian Donator holographic discord tag.';
   } else if (amountGBP >= 35.00) {
     return 'Temporary queue jump whitelisting to our Official Squad Servers for 9 months. Receive the @Royal Anglian Lifetime Donor tag.';
   } else if (amountGBP >= 25.00) {
@@ -144,16 +148,18 @@ function getTierDescription(amount) {
 async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescription) {
   try {
     const amountGBP = parseFloat(kofiData.amount);
-    const isPermanent = amountGBP >= 44.00;
+    const isPermanent = amountGBP >= 79.00;
     const duration = isPermanent ? 'Permanent' :
-      amountGBP >= 35.00 ? '9 months' :
-        amountGBP >= 25.00 ? '3 months' : '1 month';
+      amountGBP >= 44.00 ? '12 months' :
+        amountGBP >= 35.00 ? '9 months' :
+          amountGBP >= 25.00 ? '3 months' : '1 month';
 
     const embed = {
       title: 'New Ko-fi Donation',
-      color: amountGBP >= 44.00 ? 0xFFD700 :
-        amountGBP >= 35.00 ? 0x9B59B6 :
-          amountGBP >= 25.00 ? 0x3498DB : 0x2ECC71,
+      color: amountGBP >= 79.00 ? 0xFFD700 :
+        amountGBP >= 44.00 ? 0xE67E22 :
+          amountGBP >= 35.00 ? 0x9B59B6 :
+            amountGBP >= 25.00 ? 0x3498DB : 0x2ECC71,
       fields: [
         {
           name: 'Donator',
