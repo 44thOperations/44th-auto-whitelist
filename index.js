@@ -93,73 +93,102 @@ function extractSteamID64(message) {
   return null;
 }
 
-function calculateDurationHours(amount, currency) {
-  let amountGBP = parseFloat(amount);
-
-  if (amountGBP >= 39.00) {
-    return 999999;
-  } else if (amountGBP >= 29.00) {
-    return 8760; // ~12 months
-  } else if (amountGBP >= 23.00) {
-    return 6575; // ~9 months
-  } else if (amountGBP >= 16.50) {
-    return 2190; // ~3 months
-  } else if (amountGBP >= 6.70) {
-    return 730; // ~1 month
+// Donation tiers, highest first. `minGBP` is the Ko-fi price that unlocks the
+// tier; during a sale it holds the sale price, with the standard price noted.
+// Group tiers only whitelist the donor; staff add their friends manually.
+const TIERS = [
+  {
+    minGBP: 521.25, // standard £695.00
+    hours: 999999,
+    duration: 'Permanent',
+    friends: 50,
+    tag: '@THE ARBITER OF NUTS DONATOR',
+    color: 0xF39C12,
+    description: 'Permanent queue jump whitelisting for you and 50 friends. Set the server map rotation/mod once every 3 months for 4 days, with a custom broadcast message promoting your group/clan. Receive the @THE ARBITER OF NUTS DONATOR tag.'
+  },
+  {
+    minGBP: 296.25, // standard £395.00
+    hours: 999999,
+    duration: 'Permanent',
+    friends: 16,
+    tag: '@LARGEST NUTS IN ANGLIAN LAND Donator',
+    color: 0xE056FD,
+    description: 'Permanent queue jump whitelisting for you and 16 friends. Receive the @LARGEST NUTS IN ANGLIAN LAND Donator tag.'
+  },
+  {
+    minGBP: 146.25, // standard £195.00
+    hours: 999999,
+    duration: 'Permanent',
+    friends: 5,
+    tag: '@SWINGING NUTS ANGLIAN MAN Donator',
+    color: 0xE74C3C,
+    description: 'Permanent queue jump whitelisting for you and 5 friends. Receive the @SWINGING NUTS ANGLIAN MAN Donator tag.'
+  },
+  {
+    minGBP: 44.00, // standard £59.00
+    hours: 999999,
+    duration: 'Permanent',
+    friends: 0,
+    tag: '@SUPREME Anglian Donator',
+    color: 0x9B59B6,
+    description: '🔥Permanent queue jump whitelisting 🔥 to our Official Servers.\n𝐍𝐞𝐯𝐞𝐫 𝐰𝐚𝐢𝐭 𝐢𝐧 𝐚 𝐒𝐪𝐮𝐚𝐝 𝐪𝐮𝐞𝐮𝐞 𝐚𝐠𝐚𝐢𝐧.\nAlso receive the @SUPREME Anglian Donator discord tag.'
+  },
+  {
+    minGBP: 33.00, // standard £44.00
+    hours: 8760, // ~12 months
+    duration: '1 year',
+    friends: 0,
+    tag: '@ULTIMATE Anglian Donator',
+    color: 0x2ECC71,
+    description: 'Temporary queue jump whitelisting to our Official Squad Servers for 1 year. Also receive the @ULTIMATE Anglian Donator holographic discord tag.'
+  },
+  {
+    minGBP: 18.75, // standard £25.00
+    hours: 2190, // ~3 months
+    duration: '3 months',
+    friends: 0,
+    tag: '@Honoured Anglian Donator',
+    color: 0x3498DB,
+    description: 'Temporary queue jump whitelisting to our Official Squad Servers, for 3 months. Receive the @Honoured Anglian Donator tag.'
+  },
+  {
+    minGBP: 7.50, // standard £10.00
+    hours: 730, // ~1 month
+    duration: '1 month',
+    friends: 0,
+    tag: '@Royal Anglian Donator',
+    color: 0xF1C40F,
+    description: 'Temporary queue jump whitelisting to our Official Squad Servers, for 1 month. Receive the @Royal Anglian Donator tag.'
   }
+];
 
-  return 0;
+function getTier(amount) {
+  const amountGBP = parseFloat(amount);
+  return TIERS.find(tier => amountGBP >= tier.minGBP) || null;
+}
+
+function calculateDurationHours(amount, currency) {
+  const tier = getTier(amount);
+  return tier ? tier.hours : 0;
 }
 
 function getTagName(amount) {
-  const amountGBP = parseFloat(amount);
-
-  if (amountGBP >= 29.00) {
-    return '@ULTIMATE Anglian Donator';
-  } else if (amountGBP >= 23.00) {
-    return '@Royal Anglian Lifetime Donor';
-  } else if (amountGBP >= 16.50) {
-    return '@Royal Anglian Sponsor';
-  } else if (amountGBP >= 6.70) {
-    return '@Squaddie Donator';
-  }
-
-  return null;
+  const tier = getTier(amount);
+  return tier ? tier.tag : null;
 }
 
 function getTierDescription(amount) {
-  const amountGBP = parseFloat(amount);
-
-  if (amountGBP >= 39.00) {
-    return '🔥Permanent queue jump whitelisting 🔥 to our Official Servers.\n𝐍𝐞𝐯𝐞𝐫 𝐰𝐚𝐢𝐭 𝐢𝐧 𝐚 𝐒𝐪𝐮𝐚𝐝 𝐪𝐮𝐞𝐮𝐞 𝐚𝐠𝐚𝐢𝐧.\nAlso receive the @ULTIMATE Anglian Donator holographic discord tag.';
-  } else if (amountGBP >= 29.00) {
-    return 'Temporary queue jump whitelisting to our Official Squad Servers for 12 months. Also receive the @ULTIMATE Anglian Donator holographic discord tag.';
-  } else if (amountGBP >= 23.00) {
-    return 'Temporary queue jump whitelisting to our Official Squad Servers for 9 months. Receive the @Royal Anglian Lifetime Donor tag.';
-  } else if (amountGBP >= 16.50) {
-    return 'Temporary queue jump whitelisting to our Official Squad Servers, for 3 months. Receive the @Royal Anglian Sponsor tag.';
-  } else if (amountGBP >= 6.70) {
-    return 'Temporary queue jump whitelisting to our Official Squad Servers, for 1 month. Receive the @Squaddie Donator tag.';
-  }
-
-  return null;
+  const tier = getTier(amount);
+  return tier ? tier.description : null;
 }
 
 async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescription) {
   try {
-    const amountGBP = parseFloat(kofiData.amount);
-    const isPermanent = amountGBP >= 39.00;
-    const duration = isPermanent ? 'Permanent' :
-      amountGBP >= 29.00 ? '12 months' :
-        amountGBP >= 23.00 ? '9 months' :
-          amountGBP >= 16.50 ? '3 months' : '1 month';
+    const tier = getTier(kofiData.amount);
 
     const embed = {
       title: 'New Ko-fi Donation',
-      color: amountGBP >= 39.00 ? 0xFFD700 :
-        amountGBP >= 29.00 ? 0xE67E22 :
-          amountGBP >= 23.00 ? 0x9B59B6 :
-            amountGBP >= 16.50 ? 0x3498DB : 0x2ECC71,
+      color: tier.color,
       fields: [
         {
           name: 'Donator',
@@ -178,7 +207,7 @@ async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescrip
         },
         {
           name: 'Whitelist Duration',
-          value: duration,
+          value: tier.duration,
           inline: true
         },
         {
@@ -197,6 +226,14 @@ async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescrip
       },
       timestamp: new Date().toISOString()
     };
+
+    if (tier.friends > 0) {
+      embed.fields.push({
+        name: 'Action Needed',
+        value: `Group tier: whitelist ${tier.friends} friends manually.`,
+        inline: false
+      });
+    }
 
     if (kofiData.message && kofiData.message.trim()) {
       embed.fields.push({
