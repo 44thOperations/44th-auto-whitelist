@@ -125,7 +125,7 @@ const TIERS = [
     description: 'Permanent queue jump whitelisting for you and 5 friends. Receive the @SWINGING NUTS ANGLIAN MAN Donator tag.'
   },
   {
-    minGBP: 44.00, // standard £59.00
+    minGBP: 44.25, // standard £59.00
     hours: 999999,
     duration: 'Permanent',
     friends: 0,
