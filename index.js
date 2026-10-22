@@ -98,7 +98,7 @@ function extractSteamID64(message) {
 // Group tiers only whitelist the donor; staff add their friends manually.
 const TIERS = [
   {
-    minGBP: 521.25, // standard £695.00
+    minGBP: 521.00, // standard £695.00
     hours: 999999,
     duration: 'Permanent',
     friends: 50,
@@ -107,7 +107,7 @@ const TIERS = [
     description: 'Permanent queue jump whitelisting for you and 50 friends. Set the server map rotation/mod once every 3 months for 4 days, with a custom broadcast message promoting your group/clan. Receive the @THE ARBITER OF NUTS DONATOR tag.'
   },
   {
-    minGBP: 296.25, // standard £395.00
+    minGBP: 296.00, // standard £395.00
     hours: 999999,
     duration: 'Permanent',
     friends: 16,
@@ -116,7 +116,7 @@ const TIERS = [
     description: 'Permanent queue jump whitelisting for you and 16 friends. Receive the @LARGEST NUTS IN ANGLIAN LAND Donator tag.'
   },
   {
-    minGBP: 146.25, // standard £195.00
+    minGBP: 146.00, // standard £195.00
     hours: 999999,
     duration: 'Permanent',
     friends: 5,
@@ -125,7 +125,7 @@ const TIERS = [
     description: 'Permanent queue jump whitelisting for you and 5 friends. Receive the @SWINGING NUTS ANGLIAN MAN Donator tag.'
   },
   {
-    minGBP: 44.25, // standard £59.00
+    minGBP: 44.00, // standard £59.00
     hours: 999999,
     duration: 'Permanent',
     friends: 0,
