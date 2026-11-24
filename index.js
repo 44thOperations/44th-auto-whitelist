@@ -125,7 +125,7 @@ const TIERS = [
     description: 'Permanent queue jump whitelisting for you and 5 friends. Receive the @SWINGING NUTS ANGLIAN MAN Donator tag.'
   },
   {
-    minGBP: 44.00, // standard £59.00
+    minGBP: 33.00, // standard £59.00
     hours: 999999,
     duration: 'Permanent',
     friends: 0,
@@ -134,7 +134,7 @@ const TIERS = [
     description: '🔥Permanent queue jump whitelisting 🔥 to our Official Servers.\n𝐍𝐞𝐯𝐞𝐫 𝐰𝐚𝐢𝐭 𝐢𝐧 𝐚 𝐒𝐪𝐮𝐚𝐝 𝐪𝐮𝐞𝐮𝐞 𝐚𝐠𝐚𝐢𝐧.\nAlso receive the @SUPREME Anglian Donator discord tag.'
   },
   {
-    minGBP: 33.00, // standard £44.00
+    minGBP: 24.00, // standard £44.00
     hours: 8760, // ~12 months
     duration: '1 year',
     friends: 0,
@@ -143,7 +143,7 @@ const TIERS = [
     description: 'Temporary queue jump whitelisting to our Official Squad Servers for 1 year. Also receive the @ULTIMATE Anglian Donator holographic discord tag.'
   },
   {
-    minGBP: 18.75, // standard £25.00
+    minGBP: 14.00, // standard £25.00
     hours: 2190, // ~3 months
     duration: '3 months',
     friends: 0,
@@ -152,7 +152,7 @@ const TIERS = [
     description: 'Temporary queue jump whitelisting to our Official Squad Servers, for 3 months. Receive the @Honoured Anglian Donator tag.'
   },
   {
-    minGBP: 7.50, // standard £10.00
+    minGBP: 5.00, // standard £10.00
     hours: 730, // ~1 month
     duration: '1 month',
     friends: 0,
