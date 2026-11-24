@@ -62,6 +62,8 @@ async function verifyIds() {
           DONATOR_GROUP_TAG = foundClan.tag || foundClan.full_name || 'Donators';
           if (foundClan.available_groups && foundClan.available_groups.length > 0) {
             DONATOR_AVAILABLE_GROUP_ID = foundClan.available_groups[0];
+          } else {
+            console.warn(`WARNING: Clan ${DONATOR_GROUP_ID} has no available_groups assigned in the whitelist panel!`);
           }
           console.log(`Group ID verified: ${foundClan.full_name || foundClan.tag} (${DONATOR_GROUP_ID})`);
           console.log(`Using available_group ID: "${DONATOR_AVAILABLE_GROUP_ID}"`);
@@ -267,6 +269,12 @@ async function sendDiscordNotification(kofiData, steamId64, tagName, tierDescrip
 
 async function addPlayerToWhitelist(steamId64, discordUsername, username, durationHours) {
   try {
+    if (!DONATOR_AVAILABLE_GROUP_ID) {
+      // Startup verification may have failed (API down, timeout); try again now.
+      console.log('Available group ID missing, re-verifying IDs...');
+      await verifyIds();
+    }
+
     if (!DONATOR_AVAILABLE_GROUP_ID) {
       throw new Error('Available group ID not found. Make sure the server has verified IDs on startup.');
     }
